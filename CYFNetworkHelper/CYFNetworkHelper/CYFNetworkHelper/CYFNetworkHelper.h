@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "CYFNetworkCache.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 typedef NS_ENUM(NSUInteger, CYFNetworkStatusType) {
     ///< 未知网络
     CYFNetworkStatusUnknown,
@@ -95,6 +93,66 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
  */
 + (void)closeLog;
 
+
+/**
+ GET请求, 无缓存
+
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param success 请求成功的回调
+ @param failue 请求失败的回调
+ @return 返回的对象可取消请求, 调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)GET:(NSString *)URL
+                        parameters:(id)parameters
+                           success:(CYFHttpRequestSuccess)success
+                            failue:(CYFRequestFailed)failue;
+
+/**
+ GET请求, 自动缓存
+
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param responseCache 缓存数据的回调
+ @param success 请求成功的回调
+ @param failue 请求失败的回调
+ @return 返回的对象可取消请求, 调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)GET:(NSString *)URL
+               parameters:(id)parameters
+            responseCache:(CYFHttpRequestCache)responseCache
+                  success:(CYFHttpRequestSuccess)success
+                   failue:(CYFRequestFailed)failue;
+
+/**
+ POST请求, 无缓存
+
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param success 请求成功的回调
+ @param failue 请求失败的回调
+ @return 返回的对象可取消请求, 调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
+                         parameters:(id)parameters
+                            success:(CYFHttpRequestSuccess)success
+                             failue:(CYFRequestFailed)failue;
+
+/**
+ POST请求
+
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param responseCache 缓存数据的回调
+ @param success 请求成功的回调
+ @param failue 请求失败的回调
+ @return 返回对象可取消请求, 调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
+                        parameters:(id)parameters
+                     responseCache:(CYFHttpRequestCache)responseCache
+                           success:(CYFHttpRequestSuccess)success
+                            failue:(CYFRequestFailed)failue;
+
 @end
 
-NS_ASSUME_NONNULL_END

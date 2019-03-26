@@ -111,6 +111,22 @@ static NSLock *_lock;
     //    }
 }
 
+#pragma mark - GET请求无缓存
++ (NSURLSessionTask *)GET:(NSString *)URL
+               parameters:(id)parameters
+                  success:(CYFHttpRequestSuccess)success
+                   failue:(CYFRequestFailed)failue {
+    return [self GET:URL parameters:parameters responseCache:nil success:success failue:failue];
+}
+
+#pragma mark - POST请求无缓存
++ (NSURLSessionTask *)POST:(NSString *)URL
+                parameters:(id)parameters
+                   success:(CYFHttpRequestSuccess)success
+                    failue:(CYFRequestFailed)failue {
+    return [self POST:URL parameters:parameters responseCache:nil success:success failue:failue];
+}
+
 #pragma mark - GET请求自动缓存
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(id)parameters
@@ -146,6 +162,39 @@ static NSLock *_lock;
     return sessionTask;
 }
 
++ (NSURLSessionTask *)POST:(NSString *)URL
+                parameters:(id)parameters
+             responseCache:(CYFHttpRequestCache)responseCache
+                   success:(CYFHttpRequestSuccess)success
+                    failue:(CYFRequestFailed)failue {
+    ///< 首先读取缓存
+    responseCache != nil ? responseCache([CYFNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
+    NSURLSessionTask *task = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (_isOpenLog) {
+            CYFLog(@"responseObject = %@", responseObject);
+        }
+        ///< 任务数组中删除数据
+        [[self allSessionTask] removeObject:task];
+        ///< 成功的回调
+        success ? success(responseObject) : nil;
+        ///< 设置缓存
+        responseCache != nil ? [CYFNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (_isOpenLog) {
+            CYFLog(@"error = %@", error);
+        }
+        ///< 任务数组中删除数据
+        [[self allSessionTask] removeObject:task];
+        ///< 失败的回调
+        failue ? failue(error) : nil;
+    }];
+    ///< 添加进任务数组
+    task ? [[self allSessionTask] addObject:task] : nil;
+    return task;
+}
+
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 
 + (void)load {
@@ -160,6 +209,8 @@ static NSLock *_lock;
     _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 }
+
+#pragma mark - 
 
 /**
  存储所有请求task数组
@@ -177,5 +228,37 @@ static NSLock *_lock;
     }
     return _lock;
 }
+@end
+
+
+#pragma mark - NSDictionary, NSArray的分类
+
+#ifdef DEBUG
+
+@implementation NSArray(CYF)
+
+- (NSString *)descriptionWithLocale:(id)locale {
+    NSMutableString *strM = [NSMutableString stringWithString:@"(\n"];
+    [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [strM appendFormat:@"\t%@,\n", obj];
+    }];
+    [strM appendString:@")"];
+    return strM;
+}
 
 @end
+
+@implementation NSDictionary (CYF)
+
+- (NSString *)descriptionWithLocale:(id)locale {
+    NSMutableString *strM = [NSMutableString stringWithString:@"{\n"];
+    [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [strM appendFormat:@"\t%@ = %@;\n", key, obj];
+    }];
+    [strM appendString:@"}\n"];
+    return strM;
+}
+
+@end
+
+#endif
