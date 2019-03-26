@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30A5E8F0C338F6365B1BB1B8 /* libPods-CYFNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F238CAC9A263CEA553730723 /* libPods-CYFNetworkHelper.a */; };
 		57679B4A2249BC4D005A3623 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57679B492249BC4D005A3623 /* AppDelegate.m */; };
 		57679B4D2249BC4D005A3623 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57679B4C2249BC4D005A3623 /* ViewController.m */; };
 		57679B502249BC4D005A3623 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57679B4E2249BC4D005A3623 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20DB819726DF6413303F8C75 /* Pods-CYFNetworkHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYFNetworkHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CYFNetworkHelper/Pods-CYFNetworkHelper.debug.xcconfig"; sourceTree = "<group>"; };
 		57679B452249BC4D005A3623 /* CYFNetworkHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CYFNetworkHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57679B482249BC4D005A3623 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		57679B492249BC4D005A3623 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -26,6 +28,8 @@
 		57679B542249BC4F005A3623 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57679B562249BC4F005A3623 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57679B572249BC4F005A3623 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A411B33E962E1EE4D69C751B /* Pods-CYFNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYFNetworkHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-CYFNetworkHelper/Pods-CYFNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
+		F238CAC9A263CEA553730723 /* libPods-CYFNetworkHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CYFNetworkHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A5E8F0C338F6365B1BB1B8 /* libPods-CYFNetworkHelper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +49,8 @@
 			children = (
 				57679B472249BC4D005A3623 /* CYFNetworkHelper */,
 				57679B462249BC4D005A3623 /* Products */,
+				9EE18C7082D9AD5469CD179D /* Pods */,
+				A36CE7753B4A399B7B5B9E74 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +78,23 @@
 			path = CYFNetworkHelper;
 			sourceTree = "<group>";
 		};
+		9EE18C7082D9AD5469CD179D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				20DB819726DF6413303F8C75 /* Pods-CYFNetworkHelper.debug.xcconfig */,
+				A411B33E962E1EE4D69C751B /* Pods-CYFNetworkHelper.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A36CE7753B4A399B7B5B9E74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F238CAC9A263CEA553730723 /* libPods-CYFNetworkHelper.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,6 +102,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57679B5B2249BC4F005A3623 /* Build configuration list for PBXNativeTarget "CYFNetworkHelper" */;
 			buildPhases = (
+				D529900C5734187EE4E595F3 /* [CP] Check Pods Manifest.lock */,
 				57679B412249BC4D005A3623 /* Sources */,
 				57679B422249BC4D005A3623 /* Frameworks */,
 				57679B432249BC4D005A3623 /* Resources */,
@@ -135,6 +160,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D529900C5734187EE4E595F3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CYFNetworkHelper-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		57679B412249BC4D005A3623 /* Sources */ = {
@@ -283,6 +333,7 @@
 		};
 		57679B5C2249BC4F005A3623 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 20DB819726DF6413303F8C75 /* Pods-CYFNetworkHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -299,6 +350,7 @@
 		};
 		57679B5D2249BC4F005A3623 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A411B33E962E1EE4D69C751B /* Pods-CYFNetworkHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
