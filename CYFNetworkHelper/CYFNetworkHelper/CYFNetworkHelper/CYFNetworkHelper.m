@@ -77,9 +77,41 @@ static AFHTTPSessionManager *_sessionManager;
 }
 
 + (void)cancelAllRequest {
+    ///< 锁操作
     @synchronized (self) {
-        
+        ///< 遍历请求task数组, 逐个取消
+        [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask *task, NSUInteger idx, BOOL * _Nonnull stop) {
+            [task cancel];
+        }];
+        ///< 整个数组清空
+        [[self allSessionTask] removeAllObjects];
     }
+}
+
++ (void)cancelRequestWithURL:(NSString *)URL {
+    if (!URL) {
+        return;
+    }
+    ///< 锁操作
+    @synchronized (self) {
+        [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask *task, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([task.currentRequest.URL.absoluteString hasPrefix:URL]) {
+                [task cancel];
+                [[self allSessionTask] removeObject:task];
+                *stop = YES;
+            }
+        }];
+    }
+}
+
+/**
+ 存储所有请求task数组
+ */
++ (NSMutableArray *)allSessionTask {
+    if (!_allSessionTask) {
+        _allSessionTask = [[NSMutableArray alloc] init];
+    }
+    return _allSessionTask;
 }
 
 @end
