@@ -154,5 +154,72 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
                            success:(CYFHttpRequestSuccess)success
                             failue:(CYFRequestFailed)failue;
 
+
+/**
+ 上传文件
+
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param name 文件对应服务器上的字段
+ @param filePath 文件本地的沙盒路径
+ @param progress 上传进度信息
+ @param success 请求成功的回调
+ @param failue 请求失败的回调
+ @return 返回的对象可取消请求, 调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
+                                      parameters:(id)parameters
+                                            name:(NSString *)name
+                                        filePath:(NSString *)filePath
+                                        progress:(CYFHttpProgress)progress
+                                         success:(CYFHttpRequestSuccess)success
+                                         failure:(CYFRequestFailed)failue;
+
+
+#pragma mark - 设置AFHTTPSessionManager相关属性
+/**
+ 自定义sessionManager的一些属性(全局改)
+ @param sessionManager AFHTTPSessionManager实例
+ */
++ (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager;
+
+
+/**
+ 设置网络请求参数的格式: 默认为二进制格式
+ ///< 设置请求数据为JSON格式
+ CYFRequestSerializerJSON,
+ ///< 设置请求数据为二进制格式
+ CYFRequestSerializerHTTP,
+ */
++ (void)setRequestSerializer:(CYFRequestSerializer)requestSerializer;
+
+
+
+/**
+ 设置服务器响应数据格式: 默认为JSON格式
+ ///< 设置响应数据为JSON格式
+ CYFResponseSerializerJSON,
+ ///< 设置响应数据为二进制格式
+ CYFResponseSerializerHTTP,
+ */
++ (void)setResponseSerializer:(CYFResponseSerializer)responseSerializer;
+
+/**
+ 设置请求超时市场, 默认为30s
+
+ @param time 超时时长
+ */
++ (void)setRequestTimeoutInterval:(NSTimeInterval)time;
+
+///< 设置请求头
++ (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
+
+/**
+ 是否打开网络状态转菊花: 默认打开
+
+ @param open YES(打开) , NO(关闭)
+ */
++ (void)openNetworkActivityIndicator:(BOOL)open;
+
 @end
 

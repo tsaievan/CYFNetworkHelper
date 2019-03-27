@@ -195,6 +195,30 @@ static NSLock *_lock;
     return task;
 }
 
++ (NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
+                                      parameters:(id)parameters
+                                            name:(NSString *)name
+                                        filePath:(NSString *)filePath
+                                        progress:(CYFHttpProgress)progress
+                                         success:(CYFHttpRequestSuccess)success
+                                         failure:(CYFRequestFailed)failue {
+    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSError *error = nil;
+        [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
+        (failue && error) ? failue(error) : nil;
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        ///< 回到主线程, 
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+        });
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    return sessionTask;
+}
+
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 
 + (void)load {
@@ -210,7 +234,31 @@ static NSLock *_lock;
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 }
 
-#pragma mark - 
+#pragma mark - 重置AFHTTPSessionManager相关属性
+
++ (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager {
+    sessionManager ? sessionManager(_sessionManager) : nil;
+}
+
++ (void)setRequestSerializer:(CYFRequestSerializer)requestSerializer {
+    _sessionManager.requestSerializer = requestSerializer == CYFRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
+}
+
++ (void)setResponseSerializer:(CYFResponseSerializer)responseSerializer {
+    _sessionManager.responseSerializer = responseSerializer == CYFResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
+}
+
++ (void)setRequestTimeoutInterval:(NSTimeInterval)time {
+    _sessionManager.requestSerializer.timeoutInterval = time;
+}
+
++ (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
+    [_sessionManager.requestSerializer setValue:value forHTTPHeaderField:field];
+}
+
++ (void)openNetworkActivityIndicator:(BOOL)open {
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = open;
+}
 
 /**
  存储所有请求task数组
