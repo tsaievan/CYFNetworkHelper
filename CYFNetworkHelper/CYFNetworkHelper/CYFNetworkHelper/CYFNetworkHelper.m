@@ -357,6 +357,28 @@ static NSLock *_lock;
     [AFNetworkActivityIndicatorManager sharedManager].enabled = open;
 }
 
++ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath
+                 validatesDomainName:(BOOL)validatesDomainName {
+    NSData *cerData = [NSData dataWithContentsOfFile:cerPath];
+    ///< 使用证书验证模式
+    
+    /**
+     AFSSLPinningModeNone, 代表客户端无条件地信任服务器返回的证书
+     AFSSLPinningModePublicKey, 代表客户端会将服务器返回的证书与本地保存的证书中的public key 部分进行校验, 如果正确, 才继续进行
+     AFSSLPinningModeCertificate, 代表客户端会将服务器返回的证书与本地保存的证书中的public key部分以及证书内容进行校验, 如果全部正确, 才继续进行
+     */
+    
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate withPinnedCertificates:[NSSet setWithObjects:cerData, nil]];
+    
+    ///< 如果需要验证自建证书(无效证书), 需要设置为YES
+    securityPolicy.allowInvalidCertificates = YES;
+    ///< 是否需要验证域名, 默认为YES
+    securityPolicy.validatesDomainName = validatesDomainName;
+    
+    ///< 设置安全模式
+    [_sessionManager setSecurityPolicy:securityPolicy];
+}
+
 /**
  存储所有请求task数组
  */

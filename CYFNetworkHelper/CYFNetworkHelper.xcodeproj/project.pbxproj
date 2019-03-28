@@ -95,10 +95,10 @@
 		576C9A4F224D258300F4CF08 /* CYFHTTPRequestLayer */ = {
 			isa = PBXGroup;
 			children = (
-				576C9A57224D260900F4CF08 /* CYFInterfacedConst.h */,
-				576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */,
 				57616475224D2B9100F073C5 /* CYFHTTPRequest.h */,
 				57616476224D2B9100F073C5 /* CYFHTTPRequest.m */,
+				576C9A57224D260900F4CF08 /* CYFInterfacedConst.h */,
+				576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */,
 			);
 			path = CYFHTTPRequestLayer;
 			sourceTree = "<group>";
@@ -106,9 +106,9 @@
 		576C9A50224D258300F4CF08 /* CYFNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
+				576C9A53224D258300F4CF08 /* CYFNetworkCache.h */,
 				576C9A51224D258300F4CF08 /* CYFNetworkCache.m */,
 				576C9A52224D258300F4CF08 /* CYFNetworkHelper.h */,
-				576C9A53224D258300F4CF08 /* CYFNetworkCache.h */,
 				576C9A54224D258300F4CF08 /* CYFNetworkHelper.m */,
 			);
 			path = CYFNetworkHelper;

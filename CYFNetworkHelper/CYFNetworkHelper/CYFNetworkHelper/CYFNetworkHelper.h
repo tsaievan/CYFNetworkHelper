@@ -221,5 +221,22 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
  */
 + (void)openNetworkActivityIndicator:(BOOL)open;
 
+
+/**
+ 配置自建证书的https请求
+
+ @param cerPath 自建https证书的路径
+ @param validatesDomainName 是否需要验证域名, 默认为YES, 如果证书的域名与请求的的域名
+ 不一致, 需要设置为NO, 即服务器使用其他可信任机构颁发的证书, 也可以建立连接, 这个非常危险
+ 建议打开.
+ 
+ validatesDomainName = NO, 主要用于下列情况:
+ 客户端请求的是子域名, 而证书上的是另外一个域名. 因为SSL证书上的域名是独立的, 假如证书上
+ 注册的域名是www.google.com, 那么mail.google.com是无法通过验证的
+
+ */
++ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath
+                 validatesDomainName:(BOOL)validatesDomainName;
+
 @end
 
