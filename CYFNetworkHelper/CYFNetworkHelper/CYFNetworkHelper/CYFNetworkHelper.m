@@ -252,6 +252,7 @@ static NSLock *_lock;
             [formData appendPartWithFileData:imageData name:name fileName:fileNames ? NSStringFormat(@"%@.%@", fileNames[i], imageType ? : @"jpg") : imageFileName mimeType:NSStringFormat(@"image/%@", imageType ? : @"jpg")];
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
+        ///< 主线程同步操作, 这里是会阻塞当前线程, 然后等主线程的任务完成之后, 才会继续走子线程的代码
         dispatch_sync(dispatch_get_main_queue(), ^{
             progress ? progress(uploadProgress) : nil;
         });
@@ -271,6 +272,48 @@ static NSLock *_lock;
     }];
     sesstionTask ? [[self allSessionTask] addObject:sesstionTask] : nil;
     return sesstionTask;
+}
+
+#pragma mark - 下载文件
++ (NSURLSessionTask *)downloadWithURL:(NSString *)URL
+                              fileDir:(NSString *)fileDir
+                             progress:(CYFHttpProgress)progress
+                              success:(void(^)(NSString *))success
+                              failure:(CYFHttpRequestFailed)failure {
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
+    __block NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        ///< 主线程中更新下载进度
+        ///< 同步的
+        dispatch_sync(dispatch_get_main_queue(), ^{
+           progress ? progress(downloadProgress) : nil;
+        });
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        ///< 拼接缓存目录
+        NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent: fileDir ? fileDir : @"Download"];
+        ///< 打开文件管理器
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        ///< 创建download目录
+        [fileManager createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:nil];
+        ///< 拼接文件路径
+        NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
+        ///< 返回文件位置的URL地址
+        return [NSURL fileURLWithPath:filePath];
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        [[self allSessionTask] removeObject:downloadTask];
+        if (failure && error) {
+            failure(error);
+            return;
+        }
+        success ? success(filePath.absoluteString) : nil;
+    }];
+    ///< 开始下载
+    [downloadTask resume];
+    
+    ///< 把下载任务加进任务数组中
+    downloadTask ? [[self allSessionTask] addObject:downloadTask] : nil;
+    
+    return downloadTask;
 }
 
 #pragma mark - 初始化AFHTTPSessionManager相关属性
