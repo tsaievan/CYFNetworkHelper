@@ -16,6 +16,7 @@
 		57679B582249BC4F005A3623 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57679B572249BC4F005A3623 /* main.m */; };
 		576C9A55224D258300F4CF08 /* CYFNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 576C9A51224D258300F4CF08 /* CYFNetworkCache.m */; };
 		576C9A56224D258300F4CF08 /* CYFNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 576C9A54224D258300F4CF08 /* CYFNetworkHelper.m */; };
+		576C9A59224D260900F4CF08 /* CYFInterfacedConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,8 @@
 		576C9A52224D258300F4CF08 /* CYFNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYFNetworkHelper.h; sourceTree = "<group>"; };
 		576C9A53224D258300F4CF08 /* CYFNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYFNetworkCache.h; sourceTree = "<group>"; };
 		576C9A54224D258300F4CF08 /* CYFNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYFNetworkHelper.m; sourceTree = "<group>"; };
+		576C9A57224D260900F4CF08 /* CYFInterfacedConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CYFInterfacedConst.h; sourceTree = "<group>"; };
+		576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CYFInterfacedConst.m; sourceTree = "<group>"; };
 		A411B33E962E1EE4D69C751B /* Pods-CYFNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYFNetworkHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-CYFNetworkHelper/Pods-CYFNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
 		F238CAC9A263CEA553730723 /* libPods-CYFNetworkHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CYFNetworkHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -89,6 +92,8 @@
 		576C9A4F224D258300F4CF08 /* CYFHTTPRequestLayer */ = {
 			isa = PBXGroup;
 			children = (
+				576C9A57224D260900F4CF08 /* CYFInterfacedConst.h */,
+				576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */,
 			);
 			path = CYFHTTPRequestLayer;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 				576C9A55224D258300F4CF08 /* CYFNetworkCache.m in Sources */,
 				57679B4D2249BC4D005A3623 /* ViewController.m in Sources */,
 				576C9A56224D258300F4CF08 /* CYFNetworkHelper.m in Sources */,
+				576C9A59224D260900F4CF08 /* CYFInterfacedConst.m in Sources */,
 				57679B582249BC4F005A3623 /* main.m in Sources */,
 				57679B4A2249BC4D005A3623 /* AppDelegate.m in Sources */,
 			);
