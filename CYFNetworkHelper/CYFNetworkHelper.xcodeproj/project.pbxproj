@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30A5E8F0C338F6365B1BB1B8 /* libPods-CYFNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F238CAC9A263CEA553730723 /* libPods-CYFNetworkHelper.a */; };
+		57616477224D2B9100F073C5 /* CYFHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 57616476224D2B9100F073C5 /* CYFHTTPRequest.m */; };
 		57679B4A2249BC4D005A3623 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57679B492249BC4D005A3623 /* AppDelegate.m */; };
 		57679B4D2249BC4D005A3623 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57679B4C2249BC4D005A3623 /* ViewController.m */; };
 		57679B502249BC4D005A3623 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57679B4E2249BC4D005A3623 /* Main.storyboard */; };
@@ -21,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		20DB819726DF6413303F8C75 /* Pods-CYFNetworkHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYFNetworkHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CYFNetworkHelper/Pods-CYFNetworkHelper.debug.xcconfig"; sourceTree = "<group>"; };
+		57616475224D2B9100F073C5 /* CYFHTTPRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CYFHTTPRequest.h; sourceTree = "<group>"; };
+		57616476224D2B9100F073C5 /* CYFHTTPRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CYFHTTPRequest.m; sourceTree = "<group>"; };
 		57679B452249BC4D005A3623 /* CYFNetworkHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CYFNetworkHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57679B482249BC4D005A3623 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		57679B492249BC4D005A3623 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -94,6 +97,8 @@
 			children = (
 				576C9A57224D260900F4CF08 /* CYFInterfacedConst.h */,
 				576C9A58224D260900F4CF08 /* CYFInterfacedConst.m */,
+				57616475224D2B9100F073C5 /* CYFHTTPRequest.h */,
+				57616476224D2B9100F073C5 /* CYFHTTPRequest.m */,
 			);
 			path = CYFHTTPRequestLayer;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				576C9A55224D258300F4CF08 /* CYFNetworkCache.m in Sources */,
+				57616477224D2B9100F073C5 /* CYFHTTPRequest.m in Sources */,
 				57679B4D2249BC4D005A3623 /* ViewController.m in Sources */,
 				576C9A56224D258300F4CF08 /* CYFNetworkHelper.m in Sources */,
 				576C9A59224D260900F4CF08 /* CYFInterfacedConst.m in Sources */,
