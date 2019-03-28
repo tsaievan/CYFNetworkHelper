@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, CYFResponseSerializer) {
 typedef void(^CYFHttpRequestSuccess)(id responseObject);
 
 ///< 请求失败的block
-typedef void(^CYFRequestFailed)(NSError *error);
+typedef void(^CYFHttpRequestFailed)(NSError *error);
 
 ///< 缓存的block
 typedef void(^CYFHttpRequestCache)(id responseCache);
@@ -106,7 +106,7 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(id)parameters
                            success:(CYFHttpRequestSuccess)success
-                            failue:(CYFRequestFailed)failue;
+                            failue:(CYFHttpRequestFailed)failue;
 
 /**
  GET请求, 自动缓存
@@ -122,7 +122,7 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
                parameters:(id)parameters
             responseCache:(CYFHttpRequestCache)responseCache
                   success:(CYFHttpRequestSuccess)success
-                   failue:(CYFRequestFailed)failue;
+                   failue:(CYFHttpRequestFailed)failue;
 
 /**
  POST请求, 无缓存
@@ -136,7 +136,7 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(id)parameters
                             success:(CYFHttpRequestSuccess)success
-                             failue:(CYFRequestFailed)failue;
+                             failue:(CYFHttpRequestFailed)failue;
 
 /**
  POST请求
@@ -152,7 +152,7 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
                         parameters:(id)parameters
                      responseCache:(CYFHttpRequestCache)responseCache
                            success:(CYFHttpRequestSuccess)success
-                            failue:(CYFRequestFailed)failue;
+                            failue:(CYFHttpRequestFailed)failue;
 
 
 /**
@@ -173,7 +173,7 @@ typedef void(^CYFNetworkStatus)(CYFNetworkStatusType status);
                                         filePath:(NSString *)filePath
                                         progress:(CYFHttpProgress)progress
                                          success:(CYFHttpRequestSuccess)success
-                                         failure:(CYFRequestFailed)failue;
+                                         failure:(CYFHttpRequestFailed)failue;
 
 
 #pragma mark - 设置AFHTTPSessionManager相关属性

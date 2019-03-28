@@ -115,7 +115,7 @@ static NSLock *_lock;
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(id)parameters
                   success:(CYFHttpRequestSuccess)success
-                   failue:(CYFRequestFailed)failue {
+                   failue:(CYFHttpRequestFailed)failue {
     return [self GET:URL parameters:parameters responseCache:nil success:success failue:failue];
 }
 
@@ -123,7 +123,7 @@ static NSLock *_lock;
 + (NSURLSessionTask *)POST:(NSString *)URL
                 parameters:(id)parameters
                    success:(CYFHttpRequestSuccess)success
-                    failue:(CYFRequestFailed)failue {
+                    failue:(CYFHttpRequestFailed)failue {
     return [self POST:URL parameters:parameters responseCache:nil success:success failue:failue];
 }
 
@@ -132,7 +132,7 @@ static NSLock *_lock;
                parameters:(id)parameters
             responseCache:(CYFHttpRequestCache)responseCache
                   success:(CYFHttpRequestSuccess)success
-                   failue:(CYFRequestFailed)failue {
+                   failue:(CYFHttpRequestFailed)failue {
     ///< 首先读取缓存
     responseCache != nil ? responseCache([CYFNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -166,7 +166,7 @@ static NSLock *_lock;
                 parameters:(id)parameters
              responseCache:(CYFHttpRequestCache)responseCache
                    success:(CYFHttpRequestSuccess)success
-                    failue:(CYFRequestFailed)failue {
+                    failue:(CYFHttpRequestFailed)failue {
     ///< 首先读取缓存
     responseCache != nil ? responseCache([CYFNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     NSURLSessionTask *task = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -201,14 +201,15 @@ static NSLock *_lock;
                                         filePath:(NSString *)filePath
                                         progress:(CYFHttpProgress)progress
                                          success:(CYFHttpRequestSuccess)success
-                                         failure:(CYFRequestFailed)failue {
+                                         failure:(CYFHttpRequestFailed)failue {
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSError *error = nil;
         [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
         (failue && error) ? failue(error) : nil;
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         ///< 回到主线程, 更新进度
-        dispatch_async(dispatch_get_main_queue(), ^{
+        ///< 同步的
+        dispatch_sync(dispatch_get_main_queue(), ^{
             progress ? progress(uploadProgress) : nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -226,6 +227,50 @@ static NSLock *_lock;
     }];
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
     return sessionTask;
+}
+
+#pragma mark - 上传多张图片
++ (NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
+                               parameters:(id)parameters
+                                     name:(NSString *)name
+                                   images:(NSArray <UIImage *> *)images
+                                fileNames:(NSArray <NSString *> *)fileNames
+                               imageScale:(CGFloat)imageScale
+                                imageType:(NSString *)imageType
+                                 progress:(CYFHttpProgress)progress
+                                  success:(CYFHttpRequestSuccess)success
+                                  failure:(CYFHttpRequestFailed)failue {
+    NSURLSessionTask *sesstionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        for (NSUInteger i = 0; i < images.count; i++) {
+            ///< 图片经过等比压缩后得到的二进制文件
+            NSData *imageData = UIImageJPEGRepresentation(images[i], imageScale ? : 1.f);
+            ///< 默认图片的文件名, 若fileName为nil就使用
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            NSString *imageFileName = NSStringFormat(@"%@%ld.%@", str, i, imageType ? : @"jpg");
+            [formData appendPartWithFileData:imageData name:name fileName:fileNames ? NSStringFormat(@"%@.%@", fileNames[i], imageType ? : @"jpg") : imageFileName mimeType:NSStringFormat(@"image/%@", imageType ? : @"jpg")];
+        }
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            progress ? progress(uploadProgress) : nil;
+        });
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (_isOpenLog) {
+            CYFLog(@"responseObject = %@", responseObject);
+        }
+        [[self allSessionTask] removeObject:task];
+        success ? success(responseObject) : nil;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (_isOpenLog) {
+            CYFLog(@"error = %@", error);
+        }
+        [[self allSessionTask] removeObject:task];
+        failue ? failue(error) : nil;
+    }];
+    sesstionTask ? [[self allSessionTask] addObject:sesstionTask] : nil;
+    return sesstionTask;
 }
 
 #pragma mark - 初始化AFHTTPSessionManager相关属性
