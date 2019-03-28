@@ -207,15 +207,24 @@ static NSLock *_lock;
         [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
         (failue && error) ? failue(error) : nil;
     } progress:^(NSProgress * _Nonnull uploadProgress) {
-        ///< 回到主线程, 
+        ///< 回到主线程, 更新进度
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            progress ? progress(uploadProgress) : nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+        if (_isOpenLog) {
+            CYFLog(@"responseObject = %@", responseObject);
+        }
+        [[self allSessionTask] removeObject:task];
+        success ? success(responseObject) : nil;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        if (_isOpenLog) {
+            CYFLog(@"error = %@", error);
+        }
+        [[self allSessionTask] removeObject:task];
+        failue ? failue(error) : nil;
     }];
+    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
     return sessionTask;
 }
 
